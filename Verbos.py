@@ -209,6 +209,7 @@ class JogoPika(tk.Tk):
         self.verbo_v = choice(self.lista_verbos)
 
         self.counter = choice([0,0,1])
+        #self.counter = choice([1])
         if self.counter == 1:
             if self.verbo_m == 'Impératif':
                 self.verbo_m = 'Indicatif'
@@ -227,6 +228,10 @@ class JogoPika(tk.Tk):
             if self.verbo_m == 'Subjonctif':
                 self.verbo_t = 'Passé'
 
+        if self.verbo_v.capitalize() in ('Falloir', 'Pleuvoir'):
+            self.verbo_p = 'Il'
+            if self.verbo_m == 'Impératif':
+                self.verbo_m = choice(['Indicatif', 'Conditionnel', 'Subjonctif'])
 
         self.t_tempo.set(self.verbo_t)
         self.t_mood.set(self.verbo_m)
@@ -280,7 +285,7 @@ class JogoPika(tk.Tk):
 
             else:
                 part_p = f'{conjugate(verbo, PAST, None, None, INDICATIVE, PROGRESSIVE)}'
-                if verbo in ("Aller", "Venir", "Arriver", "Partir", "Entrer", "Sortir",
+                if verbo.capitalize() in ("Aller", "Venir", "Arriver", "Partir", "Entrer", "Sortir",
                     "Monter", "Descendre", "Naître", "Mourir", "Rester", "Devenir"):
                     verbo = 'Être'
                 else:

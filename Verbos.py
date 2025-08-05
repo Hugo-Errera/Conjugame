@@ -8,7 +8,7 @@ class JogoPika(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         self.title("Jogo Pika")
-        self.bind("<Escape>", self.sair)
+        self.bind("<Escape>", lambda event: self.quit())
         self.bind("<Return>", lambda event: self.f_verificar())
         self.bind("<Control_L>", lambda event: self.f_sortear())
         self.config(bg='#1e1e2e', relief='raised', borderwidth=15)
@@ -25,8 +25,8 @@ class JogoPika(tk.Tk):
 
         self.resposta_texto = tk.StringVar()
         self.resposta_label = Label(self, font=('Arial', 14, 'bold'), bd=2, relief=RIDGE, textvariable=self.resposta_texto, height=2,
-                             width=15, bg='#2d2d3e', fg='#22B14C', justify=CENTER)
-        self.resposta_label.place(x=largura * 0.428, y=altura * 0.45)
+                             width=25, bg='#2d2d3e', fg='#22B14C', justify=CENTER)
+        self.resposta_label.place(x=largura * 0.387, y=altura * 0.45)
 
         self.b_verificar = Button(self, font=('Arial', 12, 'bold'),bd=2, relief=RIDGE, text='Verifier', height=2,
                                   width=10, bg='#2d2d3e', fg='white', activebackground='#404050',
@@ -38,7 +38,6 @@ class JogoPika(tk.Tk):
                                 width=10, bg='#2d2d3e', fg='white', activebackground='#404050',
                                 activeforeground='white', command=self.f_sortear)
         self.b_sortear.place(x=largura*0.3, y=altura*0.75)
-        self.counter = 0
 
         self.t_verbo = StringVar()
         self.l_verbo = Label(self, font=('Arial', 14, 'bold'), textvariable=self.t_verbo, height=2,
@@ -65,35 +64,54 @@ class JogoPika(tk.Tk):
         self.verbosimp_flag = 0
         self.verbosimp = Button(self, bd=3, height=1, width=2, bg='#C2171D',
                                 activebackground='#404050', command=self.fverbosimp)
-        self.verbosimp.place(x=largura * 0.85, y=altura * 0.1)
+        self.verbosimp.place(x=largura * 0.9, y=altura * 0.1)
 
         self.verbos1_flag = 0
         self.verbos1 = Button(self, bd=3, height=1, width=2, bg='#C2171D',
                               activebackground='#404050', command=self.fverbos1)
-        self.verbos1.place(x=largura*0.85, y=altura*0.15)
+        self.verbos1.place(x=largura*0.9, y=altura*0.15)
 
         self.verbos2_flag = 0
         self.verbos2 = Button(self, bd=3, height=1, width=2, bg='#C2171D',
                               activebackground='#404050', command=self.fverbos2)
-        self.verbos2.place(x=largura * 0.85, y=altura * 0.2)
+        self.verbos2.place(x=largura * 0.9, y=altura * 0.2)
 
         self.verbos3_flag = 0
         self.verbos3 = Button(self, bd=3, height=1, width=2, bg='#C2171D',
                               activebackground='#404050', command=self.fverbos3)
-        self.verbos3.place(x=largura * 0.85, y=altura * 0.25)
+        self.verbos3.place(x=largura * 0.9, y=altura * 0.25)
 
         self.verbos4_flag = 0
         self.verbos4 = Button(self, bd=3, height=1, width=2, bg='#C2171D',
                               activebackground='#404050', command=self.fverbos4)
-        self.verbos4.place(x=largura * 0.85, y=altura * 0.3)
+        self.verbos4.place(x=largura * 0.9, y=altura * 0.3)
+
+        self.verbos5_flag = 0
+        self.verbos5 = Button(self, bd=3, height=1, width=2, bg='#C2171D',
+                              activebackground='#404050', command=self.fverbos5)
+        self.verbos5.place(x=largura * 0.9, y=altura * 0.35)
+
+        self.verbos6_flag = 0
+        self.verbos6 = Button(self, bd=3, height=1, width=2, bg='#C2171D',
+                              activebackground='#404050', command=self.fverbos6)
+        self.verbos6.place(x=largura * 0.9, y=altura * 0.4)
+
+        ###### Dificuldade
+        self.dif_flag = 0
+        self.dif_txt = StringVar()
+        self.dif_txt.set('Facile')
+        self.dif = Button(self, font=('Arial', 12, 'bold'),bd=2, relief=RIDGE, textvariable=self.dif_txt, height=2,
+                                  width=7, bg='#2d2d3e', fg='#22B14C', activebackground='#404050',
+                                  activeforeground='white', command=self.fdif)
+        self.dif.place(x=largura * 0.925, y=altura * 0.9)
 
 
         ###### Labels
-        for i in [1,2,3,4]:
+        for i in [1,2,3,4,5,6]:
             texto_lista = Label(self, text=f'List {i}', font=('Arial', 14, 'bold'), bd=0, fg='white', bg='#1e1e2e')
-            texto_lista.place(x=largura*0.8, y=altura*(0.05*i + 0.1))
+            texto_lista.place(x=largura*0.85, y=altura*(0.05*i + 0.1))
         (Label(self, text=f'Imp', font=('Arial', 14, 'bold'), bd=0, fg='white', bg='#1e1e2e').
-         place(x=largura*0.8, y=altura*0.1))
+         place(x=largura*0.85, y=altura*0.1))
 
         dic = {1:'Verbe:', 2:'Pronom:', 3:'Temps:', 4:'Mode:'}
         for i in dic.keys():
@@ -136,7 +154,7 @@ class JogoPika(tk.Tk):
                               'Nous': 'PL,1', 'Vous': 'PL,2', 'Ils': 'PL,3'}
 
 
-        self.lista_verbos1 = ["Avoir", "Être", "Aimer", "Placer",
+        self.lista_verbos1 = ["Avoir", "Être", "Aimer", "Placer", #'Se méfier',
                               "Manger", "Peser", "Céder", "Jeter"]
 
         self.lista_verbos2 = ['Modeler', 'Créer', 'Apprécier', 'Payer', 'Envoyer',
@@ -148,8 +166,15 @@ class JogoPika(tk.Tk):
         self.lista_verbos4 = ['Recevoir', 'Voir', 'Pourvoir', 'Savoir', 'Devoir',
                               'Pouvoir','Mouvoir', 'Pleuvoir', 'Falloir', 'Valoir']
 
+        self.lista_verbos5 = ["Vouloir", "Rendre", "Prendre", "Battre", #"Se asseoir",
+                              "Mettre", "Peindre", "Joindre", "Craindre", "Vaincre"]
+
+        self.lista_verbos6 = ["Faire", "Plaire", "Connaître", "Naître", "Croître", "Croire",
+                              "Boire", "Conclure", "Coudre", "Suivre", "Vivre", "Lire",
+                              "Dire", "Rire", "Écrire", "Cuire"]
+
         self.lista_verbosimp = ['Être', 'Avoir', 'Pouvoir', 'Aller', 'Finir',
-                                         'Venir', 'Faire', 'Savoir', 'Voir', 'Dire']
+                                'Venir', 'Faire', 'Savoir', 'Voir', 'Dire']
 
         self.lista_verbos = []
 
@@ -165,24 +190,21 @@ class JogoPika(tk.Tk):
         self.entrada_tela.delete(0, END)
         self.resposta_texto.set('')
         self.entrada_tela.config(fg='white')
-        self.verbo_m = choice(list(self.lista_moods.keys()))
+        self.verbo_t = choice(['Passé', 'Présent', 'Présent', 'Futur'])
 
-        if self.verbo_m == 'Indicatif':
-            self.verbo_t = choice(list(self.lista_tempos.keys()))
+        if self.verbo_t == 'Présent':
+            self.verbo_m = choice(list(self.lista_moods.keys()))
             self.verbo_p = choice(list(self.lista_pessoas))
-            if self.verbo_t == 'Passé':
-                self.verbo_t = 'Imparfait'
+            if self.verbo_m == 'Impératif':
+                self.verbo_p = choice(['Tu', 'Nous', 'Vous'])
 
-        elif self.verbo_m == 'Conditionnel':
-            self.verbo_t = 'Présent'
+        if self.verbo_t == 'Passé':
+            self.verbo_m = 'Indicatif'
+            self.verbo_t = 'Imparfait'
             self.verbo_p = choice(list(self.lista_pessoas))
 
-        elif self.verbo_m == 'Impératif':
-            self.verbo_t = 'Présent'
-            self.verbo_p = choice(['Tu', 'Nous', 'Vous'])
-
-        elif self.verbo_m =='Subjonctif':
-            self.verbo_t = 'Présent'
+        if self.verbo_t == 'Futur':
+            self.verbo_m = 'Indicatif'
             self.verbo_p = choice(list(self.lista_pessoas))
 
 
@@ -203,13 +225,36 @@ class JogoPika(tk.Tk):
         if self.verbos4_flag == 1:
             self.lista_verbos += self.lista_verbos4
             flag = 1
+        if self.verbos5_flag == 1:
+            self.lista_verbos += self.lista_verbos5
+            flag = 1
+        if self.verbos6_flag == 1:
+            self.lista_verbos += self.lista_verbos6
+            flag = 1
         if flag == 0:
             self.lista_verbos += self.lista_verbosimp
 
         self.verbo_v = choice(self.lista_verbos)
 
-        self.counter = choice([0,0,1])
-        #self.counter = choice([1])
+        flag = 1
+        if self.dif_flag == 0:
+            self.verbo_m = 'Indicatif'
+            if self.verbo_t == 'Imparfait':
+                flag = 0
+        elif self.dif_flag == 1:
+            if self.verbo_m == 'Conditionnel' or 'Subjonctif':
+                flag = 0
+            if self.verbo_t == 'Futur':
+                flag = 0
+
+        self.counter = 0
+        if flag == 1:
+            self.counter = choice([0,0,0,1])
+            if self.dif_flag == 0:
+                if self.verbo_t == 'Futur':
+                    self.verbo_t = 'Présent'
+                    self.counter = choice([0,0,0,1,1])
+            #self.counter = choice([1])
         if self.counter == 1:
             if self.verbo_m == 'Impératif':
                 self.verbo_m = 'Indicatif'
@@ -232,6 +277,9 @@ class JogoPika(tk.Tk):
             self.verbo_p = 'Il'
             if self.verbo_m == 'Impératif':
                 self.verbo_m = choice(['Indicatif', 'Conditionnel', 'Subjonctif'])
+        if self.verbo_v.capitalize() in 'Pouvoir':
+            if self.verbo_m == 'Impératif':
+                self.verbo_m = choice(['Indicatif', 'Conditionnel', 'Subjonctif'])
 
         self.t_tempo.set(self.verbo_t)
         self.t_mood.set(self.verbo_m)
@@ -241,9 +289,6 @@ class JogoPika(tk.Tk):
         self.entrada_texto.set('')
         self.entrada_tela.focus_set()
         self.flag_verificar = 0
-
-
-
 
     def f_verificar(self):
         if self.flag_verificar == 0:
@@ -274,21 +319,54 @@ class JogoPika(tk.Tk):
                 sing_plr = PL
 
             nome = f'{self.verbo_p} '
+
             if modo == SUBJUNCTIVE:
                 nome = self.verbo_p
-                nome = f'Que {nome.lower()} '
+                if nome == 'Il' or nome == 'Ils':
+                    nome = f'''Qu'{nome.lower()} '''
+                else:
+                    nome = f'Que {nome.lower()} '
             if modo == IMPERATIVE:
                 nome = ''
 
+
+            if verbo[:2] == 'Se':
+                verbo = verbo[3:]
+                if sing_plr == SG:
+                    if pessoa == 1:
+                        nome = f'{nome}me '
+                    if pessoa == 2:
+                        nome = f'{nome}te '
+                    if pessoa == 3:
+                        nome = f'{nome}se '
+                if sing_plr == PL:
+                    if pessoa == 1:
+                        nome = f'{nome}nous '
+                    if pessoa == 2:
+                        nome = f'{nome}vous '
+                    if pessoa == 3:
+                        nome = f'{nome}se '
+
             if self.counter == 0:
+                if verbo[0] in ['a','e','i','o','u']:
+                    if nome == 'Je ':
+                        nome = "J'"
+                    elif nome == 'Que je ':
+                        nome = "Que j'"
                 texto = f'{nome}{conjugate(verbo, tempo, pessoa, sing_plr, mood = modo)}'
 
             else:
                 part_p = f'{conjugate(verbo, PAST, None, None, INDICATIVE, PROGRESSIVE)}'
+                if nome == 'Je ':
+                    nome = "J'"
                 if verbo.capitalize() in ("Aller", "Venir", "Arriver", "Partir", "Entrer", "Sortir",
                     "Monter", "Descendre", "Naître", "Mourir", "Rester", "Devenir"):
                     verbo = 'Être'
+                    if sing_plr == PL:
+                        part_p = f'{part_p}s'
                 else:
+                    if nome == 'Que je ':
+                        nome = "Que j'"
                     verbo = 'Avoir'
                 texto = f'{nome}{conjugate(verbo, tempo, pessoa, sing_plr, mood = modo)} {part_p}'
             self.conjugacao_correta = texto.capitalize()
@@ -316,8 +394,6 @@ class JogoPika(tk.Tk):
             taxa = self.acertos_t/(self.erros_t+self.acertos_t)*100
             self.taux.set(f'{int(taxa)} %')
 
-    def sair(self, event=None):
-        self.destroy()
 
     def fverbosimp(self):
         if self.verbosimp_flag == 0:
@@ -359,7 +435,35 @@ class JogoPika(tk.Tk):
             self.verbos4_flag = 0
             self.verbos4.config(bg='#C2171D')
 
+    def fverbos5(self):
+        if self.verbos5_flag == 0:
+            self.verbos5_flag = 1
+            self.verbos5.config(bg='green')
+        else:
+            self.verbos5_flag = 0
+            self.verbos5.config(bg='#C2171D')
 
+    def fverbos6(self):
+        if self.verbos6_flag == 0:
+            self.verbos6_flag = 1
+            self.verbos6.config(bg='green')
+        else:
+            self.verbos6_flag = 0
+            self.verbos6.config(bg='#C2171D')
+
+    def fdif(self):
+        if self.dif_flag == 0:
+            self.dif_flag = 1
+            self.dif_txt.set('Moyen')
+            self.dif.config(fg='yellow')
+        elif self.dif_flag == 1:
+            self.dif_flag = 2
+            self.dif_txt.set('Difficile')
+            self.dif.config(fg='#ED1C24')
+        elif self.dif_flag == 2:
+            self.dif_flag = 0
+            self.dif_txt.set('Facile')
+            self.dif.config(fg='#22B14C')
 
 def main():
     jogo = JogoPika()
